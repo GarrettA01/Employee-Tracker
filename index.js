@@ -45,20 +45,28 @@ const app = () => {
       switch (response.options) {
         case "View All Employees":
           viewEmployees();
+          break;
         case "View All Roles":
           viewRoles();
+          break;
         case "View All Departments":
           viewDepartments();
+          break;
         case "Add Department":
           addDepartment();
+          break;
         case "Add Role":
           addRole();
+          break;
         case "Add Employee":
           addEmployee();
+          break;
         case "Update Employee Role":
           updateEmployee();
+          break;
         case "Close":
           connection.end();
+          break;
       }
     });
 };
