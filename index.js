@@ -92,3 +92,26 @@ const viewDepartments = () => {
     menu();
   });
 };
+
+//ADD OPTIONS
+const addDepartment = () => {
+  inquirer
+    .prompt([
+      {
+        message: "Enter the name department you would like to add.",
+        type: "input",
+        name: "newDept",
+      },
+    ])
+    .then((response) => {
+      connection.query(
+        "INSERT INTO department (name) VALUES (?)",
+        [response.newDept],
+        function (err, res) {
+          if (err) throw err;
+          console.log("New department added!");
+          menu();
+        }
+      );
+    });
+};
