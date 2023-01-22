@@ -98,7 +98,7 @@ const addDepartment = () => {
   inquirer
     .prompt([
       {
-        message: "Enter the name department you would like to add.",
+        message: "Enter the name of the department you would like to add.",
         type: "input",
         name: "newDept",
       },
@@ -109,7 +109,39 @@ const addDepartment = () => {
         [response.newDept],
         function (err, res) {
           if (err) throw err;
-          console.log("New department added!");
+          console.log("Successfully added new department.");
+          menu();
+        }
+      );
+    });
+};
+
+const addRole = () => {
+  inquirer
+    .prompt([
+      {
+        message: "Enter the name of the role title you would like to add.",
+        type: "input",
+        name: "roleTitle",
+      },
+      {
+        message: "Enter the salary amount of the new role.",
+        type: "input",
+        name: "roleSalary",
+      },
+      {
+        message: "Enter this new role's department id.",
+        type: "input",
+        name: "roleDept",
+      },
+    ])
+    .then((response) => {
+      connection.query(
+        "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)",
+        [response.roleTitle, response.roleSalary, response.roleDept],
+        function (err, res) {
+          if (err) throw err;
+          console.log("Successfully added new role.");
           menu();
         }
       );
