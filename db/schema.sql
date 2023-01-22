@@ -27,3 +27,11 @@ CREATE TABLE employee (
     REFERENCES role(id)
     ON DELETE SET NULL
 );
+
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
+VALUES
+("Jack", "Robert", 1, null), ("Jenn", "Marshall", 2, 1),
+("Michael", "Getz", 3, null), ("Heather", "Ann", 4, 3),
+("Steven", "Anderson", 5, null,), ("Gary", "Roark", 6, 5),
+("Jamie", "Lynn", 7, null), ("Lindsay", "Adams", 8, 7),
+("Melanie", "Walker", 9, null);
