@@ -27,7 +27,7 @@ const app = () => {
       {
         message: "What would you like to do?",
         type: "list",
-        name: "choices",
+        name: "options",
         choices: [
           "View All Employees",
           "Add Employee",
@@ -42,7 +42,7 @@ const app = () => {
       },
     ])
     .then((response) => {
-      switch (response.choices) {
+      switch (response.options) {
         case "View All Employees":
           viewEmployees();
         case "Add Employee":
@@ -63,4 +63,32 @@ const app = () => {
           connection.end();
       }
     });
+};
+
+//VIEW OPTIONS
+const viewEmployees = () => {
+  connection.query(
+    "SELECT employee.id, first_name, last_name, title, salary, name, manager_id FROM ((department JOIN role ON department.id = role.department_id) JOIN employee ON role.id = employee.role_id);",
+    function (err, res) {
+      if (err) throw err;
+      console.table(res);
+      menu();
+    }
+  );
+};
+
+const viewRoles = () => {
+  connection.query("SELECT id, title, salary FROM role", function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    menu();
+  });
+};
+
+const viewDepartments = () => {
+  connection.query("SELECT id, name FROM department", function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    menu();
+  });
 };
