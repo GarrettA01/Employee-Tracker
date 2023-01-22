@@ -45,20 +45,18 @@ const app = () => {
       switch (response.options) {
         case "View All Employees":
           viewEmployees();
-        case "Add Employee":
-          addEmployee();
-        case "Update Employee Role":
-          updateEmployee();
-        case "Update Manager":
-          updateManager();
         case "View All Roles":
           viewRoles();
-        case "Add Role":
-          addRole();
         case "View All Departments":
           viewDepartments();
         case "Add Department":
           addDepartment();
+        case "Add Role":
+          addRole();
+        case "Add Employee":
+          addEmployee();
+        case "Update Employee Role":
+          updateEmployee();
         case "Close":
           connection.end();
       }
@@ -72,7 +70,7 @@ const viewEmployees = () => {
     function (err, res) {
       if (err) throw err;
       console.table(res);
-      menu();
+      app();
     }
   );
 };
@@ -81,7 +79,7 @@ const viewRoles = () => {
   connection.query("SELECT id, title, salary FROM role", function (err, res) {
     if (err) throw err;
     console.table(res);
-    menu();
+    app();
   });
 };
 
@@ -89,7 +87,7 @@ const viewDepartments = () => {
   connection.query("SELECT id, name FROM department", function (err, res) {
     if (err) throw err;
     console.table(res);
-    menu();
+    app();
   });
 };
 
@@ -110,7 +108,7 @@ const addDepartment = () => {
         function (err, res) {
           if (err) throw err;
           console.log("Successfully added new department.");
-          menu();
+          app();
         }
       );
     });
@@ -142,8 +140,81 @@ const addRole = () => {
         function (err, res) {
           if (err) throw err;
           console.log("Successfully added new role.");
-          menu();
+          app();
         }
       );
     });
 };
+
+const addEmployee = () => {
+  inquirer
+    .prompt([
+      {
+        message: "Enter your new employee's first name.",
+        type: "input",
+        name: "firstName",
+      },
+      {
+        message: "Enter your new employee's last name.",
+        type: "input",
+        name: "lastName",
+      },
+      {
+        message: "Enter your new employee's role ID.",
+        type: "input",
+        name: "newRoleId",
+      },
+      {
+        message: "Enter your new employee's manager's ID.",
+        type: "input",
+        name: "newManagerId",
+      },
+    ])
+    .then((response) => {
+      connection.query(
+        "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)",
+        [
+          response.firstName,
+          response.lastName,
+          response.newRoleId,
+          response.newManagerId,
+        ],
+        function (err, res) {
+          if (err) throw err;
+          console.log("Successfully added new employee.");
+          app();
+        }
+      );
+    });
+};
+
+//UPDATE OPTIONS
+
+const updateEmployee = () => {
+  inquirer
+    .prompt([
+      {
+        message: "Enter your employee's ID",
+        type: "input",
+        name: "id",
+      },
+      {
+        message: "Enter your employee's new role ID",
+        type: "input",
+        name: "newRole",
+      },
+    ])
+    .then((response) => {
+      connection.query(
+        "UPDATE employee SET role_id=? WHERE id=?",
+        [response.newRole, response.id],
+        function (err, res) {
+          if (err) throw err;
+          console.log("Successfully updated employee role.");
+          app();
+        }
+      );
+    });
+};
+
+initialize();
