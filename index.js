@@ -20,3 +20,47 @@ const initialize = () => {
     app();
   });
 };
+
+const app = () => {
+  inquirer
+    .prompt([
+      {
+        message: "What would you like to do?",
+        type: "list",
+        name: "choices",
+        choices: [
+          "View All Employees",
+          "Add Employee",
+          "Update Employee Role",
+          "Update Manager",
+          "View All Roles",
+          "Add Role",
+          "View All Departments",
+          "Add Department",
+          "Close",
+        ],
+      },
+    ])
+    .then((response) => {
+      switch (response.choices) {
+        case "View All Employees":
+          viewEmployees();
+        case "Add Employee":
+          addEmployee();
+        case "Update Employee Role":
+          updateEmployee();
+        case "Update Manager":
+          updateManager();
+        case "View All Roles":
+          viewRoles();
+        case "Add Role":
+          addRole();
+        case "View All Departments":
+          viewDepartments();
+        case "Add Department":
+          addDepartment();
+        case "Close":
+          connection.end();
+      }
+    });
+};
